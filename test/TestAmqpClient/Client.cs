@@ -52,12 +52,44 @@ namespace TestAmqpClient
             factory.TlsSettings.CertificateValidationCallback = (a, b, c, d) => true;
             factory.TlsSettings.CheckCertificateRevocation = false;
             factory.TlsSettings.Protocols = System.Security.Authentication.SslProtocols.Tls12;
+            
             this.connection = await factory.OpenConnectionAsync(new Uri(this.options.Address), this.options.Sasl, TimeSpan.FromSeconds(30));
             this.session = this.connection.CreateSession(new AmqpSessionSettings());
+            this.session.Opened += Session_Opened;
+            this.session.Closed += Session_Closed;
+           
             this.link = this.CreateLink();
+            this.link.Opened += Link_Opened;
+            this.link.Closed += Link_Closed;
+
             await Task.WhenAll(
                 this.session.OpenAsync(this.session.DefaultOpenTimeout),
                 this.link.OpenAsync(this.link.DefaultOpenTimeout));
+        }
+
+        private void Connection_Opened(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Link_Closed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Link closed");
+        }
+
+        private void Session_Closed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Session closed");
+        }
+
+        private void Link_Opened(object sender, EventArgs e)
+        {
+            Console.WriteLine("Link opened");
+        }
+
+        private void Session_Opened(object sender, EventArgs e)
+        {
+            Console.WriteLine("Session opened");
         }
 
         public Task RunAsync()

@@ -9,8 +9,11 @@ namespace TestAmqpClient
         {
             if (args.Length == 0)
             {
-                Console.Out.WriteLine("TestAmqpClient.exe send|receive [options]");
-                Options.Print(Console.Out);
+
+                //Console.Out.WriteLine("TestAmqpClient.exe send|receive [options]");
+                //Options.Print(Console.Out);
+                RunAsync(new string[] { "send" } ).GetAwaiter().GetResult();
+
                 return 0;
             }
 

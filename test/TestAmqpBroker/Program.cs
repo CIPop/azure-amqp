@@ -22,7 +22,7 @@ namespace TestAmqpBroker
         {
             if (args.Length < 1)
             {
-                Usage();
+                Run(new string[] { "amqp://localhost:5672" });
             }
             else
             {
@@ -45,6 +45,9 @@ namespace TestAmqpBroker
             string[] queues = null;
             bool parseEndpoint = true;
 
+            endpoints.Add(@"amqp://localhost:5672");
+
+#if false
             for (int i = 0; i < args.Length; i++)
             {
                 if (args[i][0] != '/' && parseEndpoint)
@@ -74,6 +77,7 @@ namespace TestAmqpBroker
                     }
                 }
             }
+#endif
 
             var broker = new TestAmqpBroker(endpoints, creds, sslValue, queues);
             broker.Start();

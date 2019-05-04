@@ -65,6 +65,8 @@ namespace TestAmqpClient
             await Task.WhenAll(
                 this.session.OpenAsync(this.session.DefaultOpenTimeout),
                 this.link.OpenAsync(this.link.DefaultOpenTimeout));
+
+            session.Abort();
         }
 
         private void Connection_Opened(object sender, EventArgs e)
